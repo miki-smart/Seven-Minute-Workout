@@ -1,5 +1,6 @@
 package com.SevenMinuteWorkout
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
@@ -14,7 +15,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding?.root)
         //val flLayoutview:FrameLayout=findViewById(R.id.fl_view)
         binding?.flStart?.setOnClickListener({
-            Toast.makeText(this@MainActivity,"Start is Clicked",Toast.LENGTH_LONG).show()
+            val intent=Intent(this,ExerciseActivity::class.java)
+            startActivity(intent)
         })
     }
 
