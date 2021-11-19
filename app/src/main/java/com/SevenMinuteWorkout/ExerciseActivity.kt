@@ -1,6 +1,8 @@
 package com.SevenMinuteWorkout
 
 import android.content.Intent
+import android.media.MediaPlayer
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -10,6 +12,7 @@ import android.view.View
 import android.widget.Toast
 import com.SevenMinuteWorkout.databinding.ActivityExerciseBinding
 import com.SevenMinuteWorkout.databinding.ActivityMainBinding
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -25,6 +28,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var currentExercisePosition=0
     private var exerciseList:ArrayList<ExerciseClass>?=null
     private var tts:TextToSpeech?=null
+    private var player:MediaPlayer?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityExerciseBinding.inflate(layoutInflater)
@@ -48,6 +52,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             tts?.stop()
             tts?.shutdown()
         }
+        if(player!=null){
+            player!!.stop()
+        }
         if(countDownTimer!=null){
             countDownTimer!!.cancel()
             restProgress=0
@@ -59,6 +66,14 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding = null
     }
     private fun setUpResetView() {
+        try {
+            var soundUri= Uri.parse("android.resource://com.SevenMinuteWorkout/"+R.raw.press_start)
+            player=MediaPlayer.create(applicationContext,soundUri)
+            player!!.isLooping=false
+            player!!.start()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
         binding?.flcircle?.visibility=View.VISIBLE
         binding?.flprogressExercise?.visibility=View.INVISIBLE
         binding?.tvTitle?.visibility=View.VISIBLE
